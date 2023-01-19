@@ -18,5 +18,48 @@
 		AND
 			password = #{password}
 	</select>
+	
+	<insert id="createUser" parameterType="String">
+		INSERT INTO
+			product.productuser
+			(
+				id,
+				password,
+				name,
+				email,
+				address,
+				`role`
+			)
+		VALUES
+			(
+				#{id},
+				#{password},
+				#{name},
+				'test',
+				'test',
+				'USER'
+			);
+
+	</insert>
+	
+	<select id="checkUserPw" resultType="int">
+		SELECT
+			count(*)
+		FROM
+			product.productUser
+		WHERE
+			id=#{id}
+		AND
+			password=#{password}
+	</select>
+	
+	<select id="findUser" resultType="String">
+		SELECT
+			password
+		FROM
+			product.productUser
+		WHERE
+			id=#{id}
+	</select>
 
 </mapper>

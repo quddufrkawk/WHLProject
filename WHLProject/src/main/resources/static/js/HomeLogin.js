@@ -15,11 +15,20 @@ var getCookie = function(name) {
 
 // 쿠키 값이 있으면 자동 로그인
 $(document).ready(function(){
+	console.log(getCookie("id"));
 	if(getCookie("id")){
 		let url="/productHome";
 		location.replace(url);
 	}
 });
+
+var createUserForm = function(){
+	location.href = "/createUserForm";
+}
+
+var createUser = function(){
+	location.href = "/createUser";
+}
 
 // 자동 로그인 check 확인
 function loginCheck(){

@@ -5,8 +5,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.ArkETC.login.dto.HomeDTO;
@@ -21,12 +23,15 @@ public class HomeController {
 	
 	@Autowired
 	private HomeService homeService;
-	/*
-	@RequestMapping("/")
+	
+	@Autowired
+	private PasswordEncoder bCryptPasswordEncoder;
+	
+	@RequestMapping({"/" , "/home", "/homeLogin"})
 	public String Home() {
-		return "homeLogin";
+		return "/homeLogin";
 	}
-	*/
+	
 	
 	@RequestMapping("/loginCheck")
 	@ResponseBody
@@ -34,14 +39,56 @@ public class HomeController {
 		HomeDTO dto = new HomeDTO();
 
 		dto.setId(req.getParameter("id"));
-		dto.setPassword(req.getParameter("pw"));
 		
-		List<HomeDTO> result = homeService.checkUser(dto);
+		// 관리자 계정 로그인 편의성
+		if(dto.getId().equals("admin")){
+			dto.setPassword(req.getParameter("pw"));
+			List<HomeDTO> result = homeService.checkUser(dto);
+			log.info("result  : " + result);
+			return result;
+		}else {
+			log.info(homeService.findUser(dto.getId()));
+			dto.setPassword(homeService.findUser(dto.getId()));
+		}
+
+		if(bCryptPasswordEncoder.matches(req.getParameter("pw"), dto.getPassword())) {
+			log.info(req.getParameter("pw"));
+			
+			List<HomeDTO> result = homeService.checkUser(dto);
+			
+			log.info("log : " + homeService.checkUser(dto));
+			log.info("--- loginCheck dto --- : " + dto);
+			
+			return result;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	@RequestMapping("/createUserForm")
+	public String createUserForm() throws Exception {
 		
-		log.info("log : " + homeService.checkUser(dto));
-		log.info("--- loginCheck dto --- : " + dto);
+		return "/homeCreate";
+	}
+	
+	@RequestMapping("/createUser")
+	public String createUser(@RequestParam("id") String id, @RequestParam("password") String pw, @RequestParam("name") String name) throws Exception {
+		HomeDTO dto = new HomeDTO();
 		
-		return result;
+		log.info("test parameter  : " + id + " pw : " + pw + " name : " + name );
+		
+		dto.setId(id);
+
+		dto.setPassword(bCryptPasswordEncoder.encode(pw));
+		
+		dto.setName(name);
+		
+		log.info(" dto : " + dto);
+		
+		homeService.createUser(dto);
+		
+		return "/homeLogin";
 	}
 
 }

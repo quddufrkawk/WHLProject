@@ -19,4 +19,19 @@ public class HomeServiceImpl implements HomeService {
 		List<HomeDTO> result = homeMapper.checkUser(dto);
 		return result;
 	}
+
+	@Override
+	public void createUser(HomeDTO dto) throws Exception {
+		homeMapper.createUser(dto);
+	}
+
+	@Override
+	public int checkUserPw(HomeDTO dto) throws Exception {
+		return homeMapper.checkUserPw(dto);
+	}
+
+	@Override
+	public String findUser(String id) throws Exception {
+		return homeMapper.findUser(id);
+	}
 }

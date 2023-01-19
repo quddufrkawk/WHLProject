@@ -10,4 +10,9 @@ import com.example.ArkETC.login.dto.HomeDTO;
 public interface HomeService {
 	List<HomeDTO> checkUser(HomeDTO dto) throws Exception;
 	
+	void createUser(HomeDTO dto) throws Exception;
+	
+	int checkUserPw(HomeDTO dto) throws Exception;
+	
+	String findUser(String id) throws Exception;
 }
