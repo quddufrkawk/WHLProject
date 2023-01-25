@@ -47,14 +47,11 @@ public class HomeController {
 			
 			return result;
 		}else {
-			log.info(" ::: PasswordEncoded ::: : " + homeService.findUser(dto.getId()));
 			dto.setPassword(homeService.findUser(dto.getId()));
 		}
 
 		if(bCryptPasswordEncoder.matches(req.getParameter("pw"), dto.getPassword())) {			
 			List<HomeDTO> result = homeService.checkUser(dto);
-			
-			log.info(" ::: HomeController line 57 ::: : " + result);
 			
 			return result;
 		}
@@ -73,15 +70,9 @@ public class HomeController {
 	public String createUser(@RequestParam("id") String id, @RequestParam("password") String pw, @RequestParam("name") String name) throws Exception {
 		HomeDTO dto = new HomeDTO();
 		
-		log.info("createUser : " + id + " pw : " + pw + " name : " + name );
-		
 		dto.setId(id);
-
-		dto.setPassword(bCryptPasswordEncoder.encode(pw));
-		
+		dto.setPassword(bCryptPasswordEncoder.encode(pw));		
 		dto.setName(name);
-		
-		log.info(" dto : " + dto);
 		
 		homeService.createUser(dto);
 		
