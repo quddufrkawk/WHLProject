@@ -31,16 +31,6 @@ public class SecurityConfig {
 	
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		/*
-        http.csrf().disable()
-        .authorizeHttpRequests()
-                .requestMatchers("/user/**").authenticated()
-                .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-                .and().formLogin().loginPage("/login");
-        */
-		
         http.csrf().disable();
         http.headers().frameOptions().disable();
 	
@@ -48,14 +38,15 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-	                .loginPage("/")
-	                .loginProcessingUrl("/checkUser")
+	                .loginPage("/homeLogin").permitAll()
+	                .loginProcessingUrl("/homeLogin")
 	                .defaultSuccessUrl("/productHome")
-                .permitAll()
                 .and()
                 .logout()
-                .permitAll();
-
+	                .logoutUrl("/productLogout")
+	                .logoutSuccessUrl("/homeLogin")
+                .permitAll();        
+        
         return http.build();
     }
 	
