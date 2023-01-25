@@ -8,8 +8,7 @@ var deleteCookie = function(name) {
 // 로그아웃 기능
 function productLogout(){
 	deleteCookie("id");
-	var url = "/";
-	location.replace(url);
+	location.href = "/home";
 }
 
 // 상품 추가
