@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   
+<mapper namespace="com.example.ArkETC.login.mapper.ProductMapper">
+	<insert id="inProduct" parameterType="com.example.ArkETC.login.dto.ProductDTO">
+		INSERT INTO
+			product.productitem
+			(
+				productName,
+				productCode,
+				productPrice,
+				productCount,
+				productSeller
+			)
+		VALUES
+			(
+				#{productName},
+				MAX(productCode)+1,
+				#{productPrice},
+				#{productCount},
+				#{productSeller}
+			);
+
+	</insert>
+	
+	<select id="seProduct" resultType="com.example.ArkETC.login.dto.ProductDTO">
+		SELECT
+			productName,
+			productCode,
+			productPrice,
+			productCount,
+			productSeller
+		FROM
+			product.productitem;
+		
+	</select>
+</mapper>

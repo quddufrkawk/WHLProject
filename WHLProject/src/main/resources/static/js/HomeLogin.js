@@ -15,10 +15,8 @@ var getCookie = function(name) {
 
 // 쿠키 값이 있으면 자동 로그인
 $(document).ready(function(){
-	console.log(getCookie("id"));
 	if(getCookie("id")){
-		let url="/productHome";
-		location.replace(url);
+		location.href = "/productHome";
 	}
 });
 
@@ -44,16 +42,18 @@ function loginCheck(){
 					alert(" 아이디 혹은 비밀번호 틀림 ");
 					
 					document.getElementById("id").value="";
-					document.getElementById("password").value="";
+					document.getElementById("id").value="";					
+					
+					document.getElementById("id").focus();
 					
 				}else{
 					// 자동 로그인 버튼에 따른 세션, 쿠키 로그인 분기
 					if(document.getElementById("autoLogin").checked){
 						//쿠키
 						setCookie("id", response[0].id, 30);
-						console.log(getCookie("id"));
 					}else{
 						//세션
+						sessionStorage.setItem("id", id);
 					}
 					
 					let url="/productHome";
@@ -61,7 +61,13 @@ function loginCheck(){
 				}
 			},
 			error : function(response) {
-				console.log("fail : " + response);
+				console.log(" Fail : " + response);
 			}
 		});
+}
+
+function enterkey() {
+	if (window.event.keyCode == 13) {
+    	loginCheck();
+    }
 }

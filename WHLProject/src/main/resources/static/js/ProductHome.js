@@ -5,91 +5,111 @@ var deleteCookie = function(name) {
      document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
 };
 
+//쿠키 값 가져오는 함수
+var getCookie = function(name) {
+     var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+     return value? value[2] : null;
+};
+
+// 쿠키 나 세션값이 없으면 로그인 화면으로 돌아가기
+$(document).ready(function(){
+	if(getCookie("id") == null){
+		if(sessionStorage.getItem("id") == null){
+			location.href="/";
+		}
+	}
+	seProduct();
+});
+
+// 상품 리스트 출력
+function seProduct(){
+	$.ajax({
+			url : "/seProduct",
+			data : {},
+			success : function(response){
+				var result = "";
+				response.forEach((a) =>{
+					result += '<tr onclick="testFunction('+a.productCode+')">';
+					result += '<td>'+a.productCode+'</td>';
+					result += '<td>'+a.productName+'</td>';
+					result += '<td>'+ a.productPrice + '</td>';
+					result += '<td>' + a.productSeller + '</td>';
+					result += '</tr>';
+					
+					$("#testProductTable").html(result);				
+				});
+			},
+			error : function(response) {
+				console.log(response.responseText);
+			}
+		});
+}
+
+// 상품 리스트 출력
+function inProduct(){
+	var name = document.getElementById("productName").value;
+	var price = document.getElementById("productPrice").value;
+	var count = document.getElementById("productCount").value;
+	var id = "";
+	
+	if(getCookie("id")){
+		id = getCookie("id");
+	}else if(sessionStorage.getItem("id")){
+		id = sessionStorage.getItem("id")
+	}else{
+		alert(" 비 정상적인 접근입니다. ");
+		return;
+	}
+	
+	console.log("test : " + name + " : " + price + " : " + count + " : " + id);
+	
+	$.ajax({
+			url : "/inProduct",
+			data : {name : name, price : price, count : count, id : id},
+			success : function(response){
+				alert("상품 등록이 완료되었습니다.");
+				location.href = "/productHome";
+			},
+			error : function(response) {
+				console.log(response.responseText);
+			}
+		});
+}
+
 // 로그아웃 기능
 function productLogout(){
 	deleteCookie("id");
+	sessionStorage.removeItem("id");
 	location.href = "/home";
 }
 
 // 상품 추가
 function productAdd(){
-	var url = "/productAdd";
-	location.replace(url);
+	location.href = "/productAdd";
 }
 
-
-// 상품 추가, 삭제, 변경
-function inProduct(){
-	document.getElementById("productName");
-	document.getElementById("productPrice");
-	document.getElementById("productCount");
-	
-	// DB에 상품 데이터 올리기
-	$.ajax({
-			url : "/inProduct",
-			success : function(response){
-				
-			},
-			error : function() {
-				console.log(response.responseText);
-			}
-		});
+function returnProduct(){
+	location.href = "/productHome";
 }
 
-function deProduct(){
-	document.getElementById("productName");
-	document.getElementById("productPrice");
-	document.getElementById("productKinds");
+// 상품 갯수 증감 버튼
+function countUpDown(type){
+	var productCount = document.getElementById("productCount");
+	var countUpDown = productCount.value;
 	
-	// DB에 상품 데이터 내리기
-	$.ajax({
-			url : "deProduct.action",
-			success : function(response){				
-			let json = JSON.parse(response.responseText);
-
-			$("#productName").text(json.productName);
-			$("#productPrice").html(json.productPrice);
-			$("#productKinds").val(json.productKinds);
-			},
-			error : function() {
-				console.log(response.responseText);
-			}
-		});
+	if(countUpDown == "" || countUpDown == null || countUpDown == "NaN"){
+		countUpDown = 1;
+	}
 	
-}
-
-function upProduct(){
-	document.getElementById("productName");
-	document.getElementById("productPrice");
-	document.getElementById("productKinds");
-	
-	// DB에 상품 데이터 변경
-	$.ajax({
-			url : "upProduct.action",
-			type : "get",
-			success : function(response){
-			let json = JSON.parse(response.responseText);
-
-			$("#productName").text(json.productName);
-			$("#productPrice").html(json.productPrice);
-			$("#productKinds").val(json.productKinds);
-			},
-			error : function() {
-				console.log(response.responseText);
-			}
-		});
-	
-}
-
-// 상품 자동 슬라이드 기능
-function autoProductImg(){
-	var productImg = [];
-	
-	for(var i=0; i<productImg.length; i++){
-		console.log(productImg[i]);
+	if(type=="plus"){
+		document.getElementById("productCount").value = parseInt(countUpDown) + 1;
+	}else if(type=="minus"){
+		if(countUpDown >= 2 ){
+			document.getElementById("productCount").value = parseInt(countUpDown) - 1;
+		}else{
+			return;
+		}
 	}
 }
-
-// 상품 상세 보기
 
 // 상품 목록 - 미리보기
