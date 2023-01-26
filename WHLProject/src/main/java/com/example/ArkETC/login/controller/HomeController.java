@@ -37,12 +37,15 @@ public class HomeController {
 	@ResponseBody
 	public List<HomeDTO> loginCheck(HttpServletRequest req) throws Exception {
 		HomeDTO dto = new HomeDTO();
-
-		dto.setId(req.getParameter("id"));
+		
+		var id = req.getParameter("id");
+		var pw = req.getParameter("pw");
+		
+		dto.setId(id);
 		
 		// 관리자 계정 로그인 편의성
 		if(dto.getId().equals("admin")){
-			dto.setPassword(req.getParameter("pw"));
+			dto.setPassword(pw);
 			List<HomeDTO> result = homeService.checkUser(dto);
 			
 			return result;
@@ -50,7 +53,7 @@ public class HomeController {
 			dto.setPassword(homeService.findUser(dto.getId()));
 		}
 
-		if(bCryptPasswordEncoder.matches(req.getParameter("pw"), dto.getPassword())) {			
+		if(bCryptPasswordEncoder.matches(pw, dto.getPassword())) {			
 			List<HomeDTO> result = homeService.checkUser(dto);
 			
 			return result;

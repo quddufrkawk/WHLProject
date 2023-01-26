@@ -6,6 +6,8 @@ public class ProductDTO {
 	private String productCode;
 	private String productPrice;
 	private String productCount;
+	private String productSeller;
+	private String productNum;
 	
 	public String getProductName() {
 		return productName;
@@ -30,6 +32,18 @@ public class ProductDTO {
 	}
 	public void setProductCount(String productCount) {
 		this.productCount = productCount;
+	}
+	public String getProductSeller() {
+		return productSeller;
+	}
+	public void setProductSeller(String productSeller) {
+		this.productSeller = productSeller;
+	}
+	public String getProductNum() {
+		return productNum;
+	}
+	public void setProductNum(String productNum) {
+		this.productNum = productNum;
 	}
 	
 	@Override
