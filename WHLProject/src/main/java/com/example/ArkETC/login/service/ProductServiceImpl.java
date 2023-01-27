@@ -28,4 +28,9 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductDTO> result = productMapper.seProduct(); 
 		return result;
 	}
+
+	@Override
+	public void inProductViewCount(ProductDTO dto) throws Exception {
+		productMapper.inProductViewCount(dto);
+	}
 }

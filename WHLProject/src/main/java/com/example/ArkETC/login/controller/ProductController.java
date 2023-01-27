@@ -67,19 +67,21 @@ public class ProductController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("", );
-		
 		return "Product/productDeView";
 	}
 	
 	@RequestMapping("/deProduct")
 	@ResponseBody
-	public void deProduct(@RequestParam("code") String code) throws Exception {
+	public void deProduct(@RequestParam("code") String code, @RequestParam("ip") String ip, @RequestParam("id") String id) throws Exception {
 		
 		ProductDTO dto = new ProductDTO();
 		
-		log.info(" check req : " + code);
+		log.info(" check ip : " + code + " :: " + ip + " :: " + id);
 		
-		//productService.inProduct(dto);
+		dto.setProductCode(code);
+		dto.setIp(ip);
+		dto.setId(id);
+		
+		productService.inProductViewCount(dto);
 	}
 }

@@ -29,14 +29,15 @@ function seProduct(){
 			success : function(response){
 				var result = "";
 				response.forEach((a) =>{
-					result += '<tr onclick="testFunction('+a.productCode+')">';
-					result += '<td>'+a.productCode+'</td>';
+					result += '<tr onclick="deProduct('+a.productCode+')">';
+					result += '<td>'+a.productCode+' | </td>';
 					result += '<td>'+a.productName+'</td>';
 					result += '<td>'+ a.productPrice + '</td>';
 					result += '<td>' + a.productSeller + '</td>';
+					result += '<td>' + a.productViewCount + '</td>';
 					result += '</tr>';
 					
-					$("#testProductTable").html(result);				
+					$("#productHomeList").html(result);				
 				});
 			},
 			error : function(response) {
@@ -45,7 +46,46 @@ function seProduct(){
 		});
 }
 
-// 상품 리스트 출력
+async function getIpClient() {
+  try {
+    const response = await axios.get('https://api.ipify.org?format=json');
+    return response.data.ip;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// 클릭 시 상품 미리보기 페이지
+function deProduct(code){
+	// 조회수 증가
+	getIpClient().then(function(result){
+		var ip = result;
+		var id = "";
+		
+		if(getCookie("id") != null){
+			id = getCookie("id");
+		}else if(sessionStorage.getItem("id") != null){
+			id = sessionStorage.getItem("id");
+		}else{
+			
+		}
+	
+		$.ajax({
+			url : "/deProduct",
+			data : {code : code, ip : ip, id : id},
+			success : function(){
+				
+				location.href="/productDeView?code="+code;
+			},
+			error : function(response) {
+				console.log(response.responseText);
+			}
+		});
+		
+	});
+}
+
+// 상품 등록
 function inProduct(){
 	var name = document.getElementById("productName").value;
 	var price = document.getElementById("productPrice").value;
@@ -60,8 +100,6 @@ function inProduct(){
 		alert(" 비 정상적인 접근입니다. ");
 		return;
 	}
-	
-	console.log("test : " + name + " : " + price + " : " + count + " : " + id);
 	
 	$.ajax({
 			url : "/inProduct",
@@ -79,7 +117,7 @@ function inProduct(){
 // 로그아웃 기능
 function productLogout(){
 	deleteCookie("id");
-	sessionStorage.removeItem("id");
+	sessionStorage.clear();
 	location.href = "/home";
 }
 
