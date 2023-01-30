@@ -56,4 +56,19 @@
 			);
 		
 	</insert>
+	
+	<select id="seProductViewCount" parameterType="com.example.ArkETC.login.dto.ProductDTO" resultType="int">
+		SELECT
+			COUNT( productcode )
+		FROM
+			product.productitemipset
+		WHERE
+			productcode = #{productcode},
+		AND
+			ip = #{ip}
+		<if test="id != null and id=''">
+		AND
+			id = #{id}
+		</if>
+	</select>
 </mapper>

@@ -33,4 +33,10 @@ public class ProductServiceImpl implements ProductService {
 	public void inProductViewCount(ProductDTO dto) throws Exception {
 		productMapper.inProductViewCount(dto);
 	}
+
+	@Override
+	public int seProductViewCount(ProductDTO dto) throws Exception {
+		
+		return 0;
+	}
 }
