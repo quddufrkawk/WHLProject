@@ -12,4 +12,5 @@ public interface ProductMapper {
 	
 	List<ProductDTO> seProduct();
 
+	void inProductViewCount(ProductDTO dto);
 }

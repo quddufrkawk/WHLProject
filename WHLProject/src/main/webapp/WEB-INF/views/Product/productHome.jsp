@@ -6,6 +6,7 @@
 <meta charset="EUC-KR">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 		상품 머시깽이 페이지
@@ -17,9 +18,9 @@
 				<td>[ 상품명 ]</td>
 				<td>[ 가격 ]</td>
 				<td>[ 판매자 ]</td>
+				<td>[ 조회수 ]</td>
 			</tr>
-			<tbody id="testProductTable">
-			
+			<tbody id="productHomeList" style="cursor:pointer">
 			</tbody>
 		</table>
 </body>

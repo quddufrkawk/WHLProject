@@ -12,4 +12,7 @@ public interface ProductService {
 	
 	List<ProductDTO> seProduct() throws Exception;
 
+	void inProductViewCount(ProductDTO dto) throws Exception;
+	
+	int seProductViewCount(ProductDTO dto) throws Exception;
 }

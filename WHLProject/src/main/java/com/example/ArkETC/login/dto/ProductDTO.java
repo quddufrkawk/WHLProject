@@ -8,6 +8,11 @@ public class ProductDTO {
 	private String productCount;
 	private String productSeller;
 	private String productNum;
+	private String productViewCount;
+	
+	// 조회수 증가를 위한 기능
+	private String ip;
+	private String id;
 	
 	public String getProductName() {
 		return productName;
@@ -44,6 +49,24 @@ public class ProductDTO {
 	}
 	public void setProductNum(String productNum) {
 		this.productNum = productNum;
+	}
+	public String getProductViewCount() {
+		return productViewCount;
+	}
+	public void setProductViewCount(String productViewCount) {
+		this.productViewCount = productViewCount;
+	}
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	@Override

@@ -12,15 +12,17 @@
 				productCode,
 				productPrice,
 				productCount,
-				productSeller
+				productSeller,
+				productViewCount
 			)
 		VALUES
 			(
 				#{productName},
-				MAX(productCode)+1,
+				(select MAX(productCode) + 1 from product.productitem code),
 				#{productPrice},
 				#{productCount},
-				#{productSeller}
+				#{productSeller},
+				'0'
 			);
 
 	</insert>
@@ -31,9 +33,42 @@
 			productCode,
 			productPrice,
 			productCount,
-			productSeller
+			productSeller,
+			productViewCount
 		FROM
 			product.productitem;
 		
+	</select>
+	
+	<insert id="inProductViewCount" parameterType="com.example.ArkETC.login.dto.ProductDTO">
+		INSERT INTO
+			product.productitemipset
+			(
+				ip,
+				productCode,
+				id
+			)
+		VALUES
+			(
+				#{ip},
+				#{productCode},
+				#{id}
+			);
+		
+	</insert>
+	
+	<select id="seProductViewCount" parameterType="com.example.ArkETC.login.dto.ProductDTO" resultType="int">
+		SELECT
+			COUNT( productcode )
+		FROM
+			product.productitemipset
+		WHERE
+			productcode = #{productcode},
+		AND
+			ip = #{ip}
+		<if test="id != null and id=''">
+		AND
+			id = #{id}
+		</if>
 	</select>
 </mapper>
